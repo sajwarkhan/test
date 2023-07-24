@@ -1,26 +1,31 @@
-import { useEffect, useState } from 'react';
-import './App.css';
-import axios from 'axios';
-import Page from './Page.js';
+import { useEffect, useState } from "react";
+import "./App.css";
+import axios from "axios";
+import Page from "./Page.js";
 
 function App() {
   const [data, setdata] = useState([]);
-  const [value, setvalue] = useState("")
-  const [vatlesort, setsortvalue] = useState([])
-  const [page, setpage] = useState(1)
-  const [postperpege, setpostperpege] = useState(10)
+  const [value, setvalue] = useState("");
+  const [vatlesort, setsortvalue] = useState([]);
+  const [page, setpage] = useState(1);
+  const [postperpege, setpostperpege] = useState(10);
 
-
-  const sortoption = ["Microsoft .NET", "Java", "BusinessClient-Server", "object-Oriented Programming"]
+  const sortoption = [
+    "Microsoft .NET",
+    "Java",
+    "BusinessClient-Server",
+    "object-Oriented Programming",
+  ];
 
   useEffect(() => {
     const getdata = async () => {
-      return await axios.get("http://localhost:5000/posts").then((response) => setdata(response.data));
-    }
+      return await axios
+        .get("http://localhost:5000/posts")
+        .then((response) => setdata(response.data));
+    };
 
-    getdata()
-
-  }, [])
+    getdata();
+  }, []);
 
   // const searchPosts = (value) => {
   //   value.preventDefault();
@@ -31,11 +36,12 @@ function App() {
   // };
 
   const handlesearch = (e) => {
-
-    const filteredData = data.filter((item) => item.title.toLowerCase().includes(value.toLowerCase()));
+    const filteredData = data.filter((item) =>
+      item.title.toLowerCase().includes(value.toLowerCase())
+    );
     setdata(filteredData);
   };
-  console.log(data)
+  console.log(data);
   // const handlesearch =async(e)=> {
   //   setIsButtonDisabled(!isButtonDisabled);
   //   e.preventDafult();
@@ -44,26 +50,27 @@ function App() {
   //   return await axios.get(`http://localhost:5000/posts?q=${value}`)
   //   .then((response) => {
   //   setdata(response.data)
-  //   setvalue("") 
+  //   setvalue("")
   // }
   //  );
   // }
 
   const handlesort = async (e) => {
-    let value = e.target.value
-    setsortvalue(value)
-    return await axios.get(`http://localhost:5000/posts?_sort=${value}&_order=asc`)
+    let value = e.target.value;
+    setsortvalue(value);
+    return await axios
+      .get(`http://localhost:5000/posts?_sort=${value}&_order=asc`)
       .then((response) => {
-        setdata(response.data)
+        setdata(response.data);
 
         // const filteredData = data.filter((item) => item.categories.toLowerCase().includes(vatlesort.toLowerCase()));
         // setdata(filteredData);
-      })
-  }
+      });
+  };
 
-     const lastpostindex =postperpege *page 
-     const firstpost = lastpostindex - postperpege 
-     const postdata=data.slice(firstpost , lastpostindex)
+  const lastpostindex = postperpege * page;
+  const firstpost = lastpostindex - postperpege;
+  const postdata = data.slice(firstpost, lastpostindex);
 
   return (
     <div className="App">
@@ -76,12 +83,16 @@ function App() {
             value={value}
             onChange={(e) => setvalue(e.target.value)}
           />
-          <button type="submit" className='from_button' onClick={() => handlesearch()}>
+          <button
+            type="submit"
+            className="from_button"
+            onClick={() => handlesearch()}
+          >
             Search
           </button>
         </div>
         <div>
-          <select className='option' onChange={handlesort} value={vatlesort}>
+          <select className="option" onChange={handlesort} value={vatlesort}>
             <option>please select at least one</option>
             {sortoption.map((value, index) => (
               <option value={value} key={index}>
